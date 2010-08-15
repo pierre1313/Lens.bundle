@@ -1,7 +1,4 @@
 # Thanks to http://www.flickr.com/photos/stage88/3257281185/ for the icon.
-from PMS import *
-from PMS.Objects import *
-from PMS.Shortcuts import *
 from BeautifulSoup import BeautifulStoneSoup as BSS
 import re
 
@@ -25,7 +22,7 @@ def UpdateCache():
 ####################################################################################################
 def PhotoMenu():
   dir = MediaContainer(viewGroup='Details', title2="Photos")
-  xml = HTTP.Request(RSS_FEED).replace('media:content','content')
+  xml = HTTP.Request(RSS_FEED).content.replace('media:content','content')
   for item in XML.ElementFromString(xml).xpath('//item'):
     title = item.find('title').text
     summary = item.xpath('description')[0].text.replace('<p>','').replace('</p>','').replace('<br />',"\n").replace(' [...]', '...')
@@ -39,7 +36,7 @@ def PhotoMenu():
 ####################################################################################################
 def PhotoList(sender, key):
   dir = MediaContainer(viewGroup='Details', title2=sender.itemTitle)
-  data = HTTP.Request(key)
+  data = HTTP.Request(key).content
   url = re.findall("'dataURL','([^']+.xml)'", data)[0]
   image = 1
   for photo in XML.ElementFromURL(url).xpath('//photo'):
