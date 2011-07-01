@@ -22,7 +22,23 @@
 	<string>2</string>
 	<key>PlexPluginDebug</key>
 	<string>1</string>
+	<key>PlexPluginDevMode</key>
+	<string>0</string>
 	<key>PlexPluginMode</key>
 	<string>AlwaysOn</string>
+	<key>PlexURLServices</key>
+	<dict>
+		<key>Lens</key>
+		<dict>
+			<key>URLPattern</key>
+			<string>.*lens\.blogs\.nytimes\.com.*</string>
+			<key>LinkedPlugin</key>
+			<string>com.plexapp.plugins.nytimes.lens</string>
+			<key>TestURLs</key>
+			<array>
+				<string>http://lens.blogs.nytimes.com/2011/06/24/a-fathers-voice-through-kodachrome/</string>
+			</array>
+		</dict>
+	</dict>
 </dict>
 </plist>

@@ -1,0 +1,51 @@
+import re
+
+####################################################################################################
+
+def MetadataObjectForURL(url):
+  
+  print "fetch metadata"
+  Log(url)
+  details = HTML.ElementFromURL(url)
+
+  desc = details.xpath('//meta[@property="og:description"]')[0].get('content')
+  thumb = details.xpath('//meta[@property="og:image"]')[0].get('content')
+  title = details.xpath('//meta[@property="og:title"]')[0].get('content')
+  
+  album = PhotoAlbumObject(
+      title = title,
+      summary = desc,
+      thumb = thumb
+    )
+  return album
+
+####################################################################################################
+def MediaObjectsForURL(url):
+
+  return [(MediaObject(
+      parts = [PartObject(key=Callback(GetPhotos, url=url))]
+        )
+      )
+    ]
+
+####################################################################################################
+
+def GetPhotos(url):
+  c = ObjectContainer()
+  data = HTTP.Request(url).content
+  url = re.findall("'dataURL','([^']+.xml)'", data)[0]
+  image = 1
+  for photo in XML.ElementFromURL(url).xpath('//photo'):
+    try:
+      c.add(PhotoObject(
+        title = 'Photo %d' % image,
+        directors = photo.find('credit').text,
+        summary = photo.find('caption').text,
+        thumb = photo.find('url').text,
+        url = photo.find('url').text))
+      image += 1
+
+    except:
+      pass
+      
+  return c
