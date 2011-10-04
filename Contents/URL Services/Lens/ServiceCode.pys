@@ -19,6 +19,15 @@ def MetadataObjectForURL(url):
       thumb = thumb
     )
   return album
+
+####################################################################################################
+
+def MediaObjectsForURL(url):
+  return [(MediaObject(
+      parts = [PartObject(key=Callback(GetPhotos, url=url))]
+        )
+      )
+    ]
     
 ####################################################################################################
 
@@ -31,7 +40,7 @@ def GetPhotos(url):
     try:
       c.add(PhotoObject(
         title = 'Photo %d' % image,
-        directors = photo.find('credit').text,
+        directors = [photo.find('credit').text],
         summary = photo.find('caption').text,
         thumb = photo.find('url').text,
         url = photo.find('url').text))
